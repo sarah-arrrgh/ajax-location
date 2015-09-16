@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Yo fancy address finder</title>
+    <script src = "https://code.jquery.com/jquery-2.1.4.js"></script>
+  </head>
+  <body>
+    <h1>Address Finder</h1>
+    <form>
+      <input type=text id="location">
+      <button id="submit">Submit</button>
+    </form>
+    <div id="results"></div>
+    <script>
+      // Assign handlers immediately after making the request,
+      // and remember the jqXHR object for this request
+
+      // function renderAddresses(results){
+      // }
+      function hyperLocate(query){
+
+        var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(query) + "&sensor=false"
+
+        console.log("FLAG")
+
+        $.ajax({
+        url: url,
+        type: 'GET',
+          success: function (data)
+          {
+            console.log(url)
+            // $.each(data.results, function (result) {
+            //   $("#results").append("<p>"+ result +"</p><br>")
+            // })
+
+            // data.results.forEach(function (result, index) {
+            //   $("#results").append("<p>"+ result +"</p><br>")
+            // })
+            $("#results").empty()
+            for (var i = 0; i < data.results.length; i++) {
+              $("#results").append("<p>"+ data.results[i].formatted_address +"</p><br>")
+            }
+            // document.write(data.results[0].formatted_address)
+          }
+        })
+      }
+
+      $("#submit").click(function(clicked) {
+        clicked.preventDefault()
+        var location = $('#location').val()
+        hyperLocate(location)
+      })
+
+    </script>
+  </body>
+</html>
